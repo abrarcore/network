@@ -8,7 +8,7 @@
 int main()
 {
     int sd;
-    char ch1[200], ch2[200];
+    char a[200], b[200];
 
     struct sockaddr_in server;
     socklen_t len = sizeof(server);
@@ -22,15 +22,10 @@ int main()
     while (1)
     {
         printf("\nEnter message for Server: ");
-        scanf(" %[^\n]", ch1);
-
-        sendto(sd, ch1, strlen(ch1) + 1, 0,
-               (struct sockaddr *)&server, len);
-
-        recvfrom(sd, ch2, sizeof(ch2), 0,
-                 (struct sockaddr *)&server, &len);
-
-        printf("Message from Server: %s\n", ch2);
+        scanf(" %[^\n]", a);
+        sendto(sd, a, strlen(a) + 1, 0, (struct sockaddr *)&server, len);
+        recvfrom(sd, b, sizeof(b), 0, (struct sockaddr *)&server, &len);
+        printf("Message from Server: %s\n", b);
     }
 
     close(sd);
