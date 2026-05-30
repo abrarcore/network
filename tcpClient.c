@@ -40,16 +40,10 @@ int main()
         gets(name);
 
         write(sockfd, name, sizeof(name));
-
-        if(strcmp(name, "exit") == 0)
-            break;
-
         read(sockfd, ser, sizeof(ser));
 
         printf("Server: %s\n", ser);
 
-        if(strcmp(ser, "exit") == 0)
-            break;
     }
 
     close(sockfd);
