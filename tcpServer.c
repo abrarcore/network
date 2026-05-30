@@ -19,35 +19,47 @@ int main()
     serv_sockfd = socket(AF_INET, SOCK_STREAM, 0);
 
     serv_address.sin_family = AF_INET;
-    serv_address.sin_port = 9001;
+    serv_address.sin_port = htons(9001);
     serv_address.sin_addr.s_addr = inet_addr("127.0.0.1");
 
     serv_len = sizeof(serv_address);
 
-    bind(serv_sockfd, (struct sockaddr *)&serv_address, serv_len);
+    bind(serv_sockfd,
+         (struct sockaddr *)&serv_address,
+         serv_len);
 
     listen(serv_sockfd, 5);
 
-    while (1)
+    printf("Server waiting...\n");
+
+    cli_len = sizeof(cli_addr);
+
+    cli_sockfd = accept(serv_sockfd,
+                        (struct sockaddr *)&cli_addr,
+                        &cli_len);
+
+    printf("Client connected.\n");
+
+    while(1)
     {
-        printf("Server is waiting...\n");
-
-        cli_len = sizeof(cli_addr);
-
-        cli_sockfd = accept(serv_sockfd,
-                           (struct sockaddr *)&cli_addr,
-                           &cli_len);
-
         read(cli_sockfd, a, sizeof(a));
 
-        printf("Reading message from Client: ");
-        puts(a);
+        printf("Client: %s\n", a);
 
-        printf("Enter message for client: ");
+        if(strcmp(a, "exit") == 0)
+            break;
+
+        printf("Server: ");
         gets(b);
 
         write(cli_sockfd, b, sizeof(b));
 
-        close(cli_sockfd);
+        if(strcmp(b, "exit") == 0)
+            break;
     }
+
+    close(cli_sockfd);
+    close(serv_sockfd);
+
+    return 0;
 }
