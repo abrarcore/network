@@ -6,14 +6,12 @@
 #include <netinet/in.h>
 #include <string.h>
 
-#define MAXLINE 20
-#define SERV_PORT 5777
 
 int main(int argc, char *argv[])
 {
     int sockfd;
 
-    char line[MAXLINE], revline[MAXLINE];
+    char a[50], b[50];
 
     struct sockaddr_in servaddr;
 
@@ -22,26 +20,20 @@ int main(int argc, char *argv[])
     bzero(&servaddr, sizeof(servaddr));
 
     servaddr.sin_family = AF_INET;
-    servaddr.sin_port = htons(SERV_PORT);
+    servaddr.sin_port = htons(5777);
     servaddr.sin_addr.s_addr = htonl(INADDR_ANY);
 
-    connect(sockfd,
-            (struct sockaddr *)&servaddr,
-            sizeof(servaddr));
+    connect(sockfd, (struct sockaddr *)&servaddr,  sizeof(servaddr));
 
     printf("Enter the data to be sent:\n");
 
-    while (fgets(line, MAXLINE, stdin) != NULL)
+    while (fgets(a, MAXa, stdin) != NULL)
     {
-        write(sockfd, line, strlen(line));
-
-        printf("Line sent\n");
-
-       int n= read(sockfd, revline, MAXLINE);
-	revline[n]='\0';
-        printf("Reverse of the given sentence is: %s\n",
-               revline);
-
+        write(sockfd, a, strlen(a));
+        printf("a sent\n");
+       int n= read(sockfd, b, MAXa);
+	    b[n]='\0';
+        printf("Reverse of the given sentence is: %s\n",b);
         printf("\n");
     }
 
