@@ -13,7 +13,7 @@ int main()
     int server_sockfd, client_sockfd;
     int server_len, client_len;
 
-    char msg1[100], msg2[100];
+    char a[100], b[100];
 
     time_t t;
 
@@ -22,34 +22,29 @@ int main()
     server_sockfd = socket(AF_INET, SOCK_STREAM, 0);
 
     server_address.sin_family = AF_INET;
-    server_address.sin_port = 4006;
-    server_address.sin_addr.s_addr =
-        inet_addr("127.0.0.1");
+    server_address.sin_port = htons(4006);
+    server_address.sin_addr.s_addr = inet_addr("127.0.0.1");
 
     server_len = sizeof(server_address);
 
-    bind(server_sockfd,
-         (struct sockaddr *)&server_address,
-         server_len);
+    bind(server_sockfd, (struct sockaddr *)&server_address, server_len);
 
     listen(server_sockfd, 5);
 
     client_len = sizeof(client_address);
 
-    client_sockfd = accept(server_sockfd,
-                          (struct sockaddr *)&client_address,
-                          &client_len);
+    client_sockfd = accept(server_sockfd, (struct sockaddr *)&client_address, &client_len);
 
-    read(client_sockfd, msg2, sizeof(msg2));
+    read(client_sockfd, b, sizeof(b));
 
     printf("Message from client: ");
-    puts(msg2);
+    puts(b);
 
     t = time(NULL);
 
-    sprintf(msg1, "%s", ctime(&t));
+    sprintf(a, "%s", ctime(&t));
 
-    write(client_sockfd, msg1, sizeof(msg1));
+    write(client_sockfd, a, sizeof(a));
 
     close(client_sockfd);
 
