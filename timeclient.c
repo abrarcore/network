@@ -12,7 +12,7 @@ int main()
 
     struct sockaddr_in address;
 
-    char msg1[100], msg2[100];
+    char a[100], b[100];
 
     sockfd = socket(AF_INET, SOCK_STREAM, 0);
 
@@ -35,15 +35,15 @@ int main()
 
     printf("Enter: ");
 
-    gets(msg2);
+    gets(b);
 
-    write(sockfd, msg2, sizeof(msg2));
+    write(sockfd, b, sizeof(b));
 
-    read(sockfd, msg1, sizeof(msg1));
+    read(sockfd, a, sizeof(a));
 
     printf("Time of server is:\n");
 
-    puts(msg1);
+    puts(a);
 
     return 0;
 }
