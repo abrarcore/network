@@ -46,16 +46,11 @@ int main()
 
         printf("Client: %s\n", a);
 
-        if(strcmp(a, "exit") == 0)
-            break;
 
         printf("Server: ");
         gets(b);
 
         write(cli_sockfd, b, sizeof(b));
-
-        if(strcmp(b, "exit") == 0)
-            break;
     }
 
     close(cli_sockfd);
