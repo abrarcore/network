@@ -10,7 +10,6 @@
 int main()
 {
     int sockfd, len, result;
-
     struct sockaddr_in address;
 
     char name[100], ser[100];
@@ -18,32 +17,39 @@ int main()
     sockfd = socket(AF_INET, SOCK_STREAM, 0);
 
     address.sin_family = AF_INET;
-    address.sin_port = 9001;
+    address.sin_port = htons(9001);
     address.sin_addr.s_addr = inet_addr("127.0.0.1");
 
     len = sizeof(address);
 
     result = connect(sockfd,
-                    (struct sockaddr *)&address,
-                    len);
+                     (struct sockaddr *)&address,
+                     len);
 
-    if (result == -1)
+    if(result == -1)
     {
         perror("Unable to connect");
         exit(1);
     }
 
-    while (1)
-    {
-        printf("Enter message: ");
+    printf("Connected to server...\n");
 
+    while(1)
+    {
+        printf("Client: ");
         gets(name);
 
         write(sockfd, name, sizeof(name));
 
+        if(strcmp(name, "exit") == 0)
+            break;
+
         read(sockfd, ser, sizeof(ser));
 
-        printf("Server sends: %s\n", ser);
+        printf("Server: %s\n", ser);
+
+        if(strcmp(ser, "exit") == 0)
+            break;
     }
 
     close(sockfd);
